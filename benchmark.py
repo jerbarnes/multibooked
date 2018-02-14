@@ -5,6 +5,7 @@ from corpus_stats import *
 from nltk import PerceptronTagger
 from sklearn.svm import LinearSVC
 from sklearn.metrics import f1_score
+from sklearn.cross_validation import KFold
 
 label_dict = { 'B-StrongPositive': 'B-SP',
                'I-StrongPositive': 'I-SP',
@@ -71,8 +72,9 @@ def convert_expressions_labels(kaf, label_dictionary):
 
 def word2features(sent, i):
     """
-    sent: a list of word, pos_tag tuples, ex: [("the", 'DET'), ("man",'NOUN'), ("ran",'VERB')]
-    i   : an integer that refers to the index of the word in the sentence
+    Creates a feature vector for word i in sent.
+    :param sent: a list of word, pos_tag tuples, ex: [("the", 'DET'), ("man",'NOUN'), ("ran",'VERB')]
+    :param i   : an integer that refers to the index of the word in the sentence
     
     This function returns a dictionary object of features of the word at i.
 
@@ -188,63 +190,79 @@ if __name__ == '__main__':
             except IndexError:
                 pass
 
-        # Create split: train on 80 percent, test on 20
-        idx = int(len(sents) * .8)
-        train_sents, test_sents = sents[:idx], sents[idx:]
+        sents = np.array(sents)
+        only_expressions = np.array(only_expressions)
 
-        # Extract features for training CRF
-        X_train = [sent2features(s) for s in train_sents]
-        y_train = [sent2labels(s) for s in train_sents]
-        X_test = [sent2features(s) for s in test_sents]
-        y_test = [sent2labels(s) for s in test_sents]
+        # Create cross validation splits
+        target_f1s = []
+        expression_f1s = []
+        holder_f1s = []
 
-        # Setup CRF classifier
-        crf = sklearn_crfsuite.CRF(
-            algorithm='lbfgs',
-            c1=0.1,
-            c2=0.1,
-            max_iterations=100,
-            all_possible_transitions=True)
+        print('Corpus: {0}'.format(corpus))
+        print('Performing 10-fold cross-validation...')
 
-        # Train classifier
-        crf.fit(X_train, y_train)
-        y_pred = crf.predict(X_test)
-        
         labels = ['B-target', 'I-target', 'B-holder', 'B-SP', 'I-SP', 'B-P', 'I-P', 'B-N', 'I-N', 'B-SN', 'I-SN']
         target_labels = ['B-target', 'I-target']
         expression_labels = ['B-SP', 'I-SP', 'B-P', 'I-P', 'B-N', 'I-N', 'B-SN', 'I-SN']
         holder_labels = ['B-holder']
 
-        # Print out metrics
-        print('Corpus: {0}'.format(corpus))
-        target_f1 = metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=target_labels)
-        expression_f1 = metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=expression_labels)
-        holder_f1 = metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=holder_labels)
+        kf = KFold(len(sents), n_folds=10)
+        for train_index, test_index in kf:
+            train_sents, test_sents = sents[train_index], sents[test_index]
 
-        print('Target F1:     {0:.2f}'.format(target_f1))
-        print('Expression F1: {0:.2f}'.format(expression_f1))
-        print('Holder F1:     {0:.2f}'.format(holder_f1))
+            # Extract features for training CRF
+            X_train = [sent2features(s) for s in train_sents]
+            y_train = [sent2labels(s) for s in train_sents]
+            X_test = [sent2features(s) for s in test_sents]
+            y_test = [sent2labels(s) for s in test_sents]
+
+            # Setup CRF classifier
+        
+            crf = sklearn_crfsuite.CRF(
+                algorithm='lbfgs',
+                c1=0.1,
+                c2=0.1,
+                max_iterations=100,
+                all_possible_transitions=True)
+
+            # Train classifier
+            crf.fit(X_train, y_train)
+            y_pred = crf.predict(X_test)
+
+
+            target_f1s.append(metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=target_labels))
+            expression_f1s.append(metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=expression_labels))
+            holder_f1s.append(metrics.flat_f1_score(y_test, y_pred, average='weighted', labels=holder_labels))
         
 
-        # Create split for expressions: 80 / 20
-        idx = int(len(only_expressions) * .8)
-        train_exp, test_exp = only_expressions[:idx], only_expressions[idx:]
+        # Create cross-validations splits for classification
+        classification_f1s = []
 
-        # Get word2idx dictionary
-        w2idx = get_vocab(only_expressions)
+        kf = KFold(len(only_expressions), n_folds=10)
+        for train_index, test_index in kf:
+            train_exp, test_exp = only_expressions[train_index], only_expressions[test_index]
 
-        # Create BOW reps
-        exp_X_train = [BOW(exp, w2idx) for exp, label in train_exp]
-        exp_y_train = [label for exp, label in train_exp]
+            # Get word2idx dictionary
+            w2idx = get_vocab(only_expressions)
 
-        exp_X_test = [BOW(exp, w2idx) for exp, label in test_exp]
-        exp_y_test = [label for exp, label in test_exp]
+            # Create BOW reps
+            exp_X_train = [BOW(exp, w2idx) for exp, label in train_exp]
+            exp_y_train = [label for exp, label in train_exp]
 
-        # Train and test Linear SVM on BOW reps for classification
-        clf = LinearSVC()
-        clf.fit(exp_X_train, exp_y_train)
-        pred = clf.predict(exp_X_test)
-        score = f1_score(exp_y_test, pred, labels=sorted(set(exp_y_test)), average='weighted')
+            exp_X_test = [BOW(exp, w2idx) for exp, label in test_exp]
+            exp_y_test = [label for exp, label in test_exp]
 
-        print('F1 for classification: {0:.2f}'.format(score))
+            # Train and test Linear SVM on BOW reps for classification
+            clf = LinearSVC()
+            clf.fit(exp_X_train, exp_y_train)
+            pred = clf.predict(exp_X_test)
+            classification_f1s.append(f1_score(exp_y_test, pred,
+                                               labels=sorted(set(exp_y_test)),
+                                               average='weighted'))
+
+        print('Target F1:     {0:.2f}'.format(sum(target_f1s) / len(target_f1s)))
+        print('Expression F1: {0:.2f}'.format(sum(expression_f1s) / len(expression_f1s)))
+        print('Holder F1:     {0:.2f}'.format(sum(holder_f1s) / len(holder_f1s)))
+
+        print('F1 for classification: {0:.2f}'.format(sum(classification_f1s) / len(classification_f1s)))
         print()
