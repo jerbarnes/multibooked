@@ -52,13 +52,6 @@ cd multibooked
 The script will reproduce the statistics and the benchmarks reported in the original paper.
 
 ```
-=================== Benchmarks ===================
-Corpus: ca
-Traceback (most recent call last):
-  File "benchmark.py", line 207, in <module>
-    train_sents, test_sents = sents[train_index], sents[test_index]
-TypeError: only integer scalar arrays can be converted to a scalar index
-jeremy@jeremy-Aspire-V5-573PG:~/Escritorio/MultiBooked$ ./run.sh 
 ================ Corpus Statistics ================
 corpora/ca
 Number of KAFs analyzed:  567
