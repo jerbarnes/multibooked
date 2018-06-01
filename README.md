@@ -5,7 +5,7 @@ This is the finalized version of the corpora described in the following paper:
 
 Jeremy Barnes, Patrik Lambert, and Toni Badia. 2016. **MultiBooked: A corpus of Basque and Catalan Hotel Reviews Annotated for Aspect-level Sentiment Classification**. In *Proceedings of the Eleventh International Conference on Language Resources and Evaluation (LREC'18)*.
 
-The corpora are compiled from hotel reviews taken mainly from booking.com. The corpora are in Kaf/Naf format [https://github.com/opener-project/kaf/wiki/KAF-structure-overview] [https://github.com/newsreader/NAF], which is an xml-style stand-off format that allows for multiple layers of annotation. Each review was sentence- and word-tokenized and lemmatized using Freeling [http://nlp.lsi.upc.edu/freeling/node/1] for Catalan and ixa-pipes [http://ixa2.si.ehu.es/ixa-pipes/] for Basque. Finally, for each language two annotators annotated opinion holders, opinion targets, and opinion expressions for each review, following the guidelines set out in the OpeNER project [http://www.opener-project.eu/]. Details can be found in the paper.
+The corpora are compiled from hotel reviews taken mainly from booking.com. The corpora are in [Kaf](https://github.com/opener-project/kaf/wiki/KAF-structure-overview)[/Naf format](https://github.com/newsreader/NAF), which is an xml-style stand-off format that allows for multiple layers of annotation. Each review was sentence- and word-tokenized and lemmatized using [Freeling](http://nlp.lsi.upc.edu/freeling/node/1) for Catalan and [ixa-pipes](http://ixa2.si.ehu.es/ixa-pipes/) for Basque. Finally, for each language two annotators annotated opinion holders, opinion targets, and opinion expressions for each review, following the guidelines set out in the [OpeNER project](http://www.opener-project.eu/). Details can be found in the paper.
 
 This package includes the two corpora, as well as providing scripts to obtain corpus statistics (corpus_stats.py), reproduce the benchmarks reported in the paper (crf.py), extract only the opinionated units from the text (extract_opinions.py), or map the aspect-level annotations to sentence- or document-level annotated corpora (extract_sentences.py).
 
@@ -33,9 +33,9 @@ Requirements for stats and extraction
 
 Additional Requirements for benchmarking
 --------
-- nltk [http://www.nltk.org/]
-- sklearn [http://scikit-learn.org/stable/]
-- sklearn-crfsuite [https://sklearn-crfsuite.readthedocs.io/en/latest/]	
+- [nltk](http://www.nltk.org/)
+- [sklearn](http://scikit-learn.org/stable/)
+- [sklearn-crfsuite](https://sklearn-crfsuite.readthedocs.io/en/latest/)
 
 
 Usage
@@ -99,4 +99,4 @@ License
 
 Copyright (C) 2018, Jeremy Barnes
 
-Licensed under the terms of the GNU General Public License, either version 3 or (at your option) any later version. A full copy of the license can be found in LICENSE.txt.
+Licensed under the terms of the Creative Commons CC-BY public license
