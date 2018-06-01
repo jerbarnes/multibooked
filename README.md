@@ -72,16 +72,19 @@ Holders:       296
 
 =================== Benchmarks ===================
 Corpus: ca
-Target F1:     0.66
-Expression F1: 0.51
-Holder F1:     0.58
-F1 for classification: 0.77
+Performing 10-fold cross-validation...
+Target F1:     0.64
+Expression F1: 0.52
+Holder F1:     0.56
+F1 for classification: 0.80
 
 Corpus: eu
-Target F1:     0.54
-Expression F1: 0.53
-Holder F1:     0.47
-F1 for classification: 0.85
+Performing 10-fold cross-validation...
+Target F1:     0.57
+Expression F1: 0.54
+Holder F1:     0.54
+F1 for classification: 0.84
+
 
 ```
 
@@ -99,4 +102,4 @@ License
 
 Copyright (C) 2018, Jeremy Barnes
 
-Licensed under the terms of the Creative Commons CC-BY public license
+Licensed under the terms of the Creative Commons CC-BY public license. A full copy of the license can be found in LICENSE.txt.
