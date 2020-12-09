@@ -271,6 +271,7 @@
           <target id="t_1"/>
           <target id="t_2"/>
         </span>
+      </opinion_expression>
     </opinion>
   </opinions>
 </KAF>
