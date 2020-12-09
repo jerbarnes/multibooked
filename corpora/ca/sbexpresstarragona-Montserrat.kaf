@@ -251,6 +251,7 @@
           <target id="t_15"/>
         </span>
       </opinion_expression>
+    </opinion>
     <opinion oid="o5">
       <!-- Tag opinion scope id=3 -->
       <opinion_holder/>
@@ -270,6 +271,7 @@
           <target id="t_1"/>
           <target id="t_2"/>
         </span>
+      </opinion_expression>
     </opinion>
   </opinions>
 </KAF>

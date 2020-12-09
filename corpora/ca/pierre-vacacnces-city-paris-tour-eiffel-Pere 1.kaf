@@ -675,12 +675,12 @@
     </opinion>
     <opinion oid="o1">
       <!-- Tag opinion scope id=3 -->
-      <opinion_target>
+      <opinion_holder>
         <!-- hem -->
         <span>
           <target id="t_22"/>
         </span>
-      </opinion_target>
+      </opinion_holder>
       <opinion_target>
         <!-- el preu que pagat -->
         <span>

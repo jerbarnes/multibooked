@@ -171,7 +171,6 @@
           <target id="t_5"/>
         </span>
       </opinion_target>
-      <opinion_target/>
       <opinion_expression polarity="Negative">
         <!-- sempre toca interiors -->
         <span>
@@ -197,7 +196,7 @@
           <target id="t_22"/>
         </span>
       </opinion_expression>
-      </opinion>
+    </opinion>
     <opinion oid="o2">
       <!-- Tag opinion scope id=5 -->
       <opinion_holder/>
@@ -208,6 +207,7 @@
 	  <target id="t_18"/>
 	  <target id="t_19"/>
 	</span>
+      </opinion_expression>
     </opinion>
   </opinions>
 </KAF>
