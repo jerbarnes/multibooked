@@ -253,7 +253,7 @@
 	<span>
 	  <target id="t_4"/>
 	</span>
-      <opinion_holder/>
+      </opinion_holder>
       <opinion_target>
         <!-- habitació -->
         <span>
@@ -269,9 +269,6 @@
           <target id="t_9"/>
         </span>
       </opinion_expression>
-
-
-
     </opinion>
   </opinions>
 </KAF>
