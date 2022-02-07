@@ -102,4 +102,4 @@ License
 
 Copyright (C) 2018, Jeremy Barnes
 
-Licensed under the terms of the Creative Commons CC-BY public license. A full copy of the license can be found in LICENSE.txt.
+Licensed under the terms of the Creative Commons CC-BY-NC 3.0 license. See license.txt for further information.
