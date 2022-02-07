@@ -555,6 +555,7 @@
           <target id="t_16"/>
         </span>
       </opinion_expression>
+    </opinion>
     <opinion oid="o7">
       <!-- Tag opinion scope id=16 -->
       <opinion_holder/>

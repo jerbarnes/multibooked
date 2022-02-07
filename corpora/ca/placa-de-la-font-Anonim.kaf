@@ -318,6 +318,7 @@
           <target id="t_22"/>
         </span>
       </opinion_expression>
+    </opinion>
     <opinion oid="o4">
       <!-- Tag opinion scope id=9 -->
       <opinion_holder/>
